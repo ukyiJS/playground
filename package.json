@@ -30,7 +30,7 @@
     "pre-commit": "./node_modules/.bin/nano-staged"
   },
   "nano-staged": {
-    "packages/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}": [
+    "**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}": [
       "eslint --cache --fix"
     ]
   }

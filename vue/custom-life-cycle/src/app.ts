@@ -1,0 +1,58 @@
+import type { Pinia } from 'pinia';
+import type { AppConfig, ComponentOptions, ComponentPublicInstance, App as VueApp } from 'vue';
+import type { RouteLocationNormalized, RouteLocationNormalizedLoaded, Router } from 'vue-router';
+import { router } from '@/router';
+import { pinia } from '@/stores';
+
+type AppOptions<E, R> = {
+  beforeCreate?(router: Router, pinia: Pinia): void | Promise<void>;
+  mounted?(router: Router, pinia: Pinia): void | Promise<void>;
+  mixins?: ComponentOptions[]
+  directive?(): void;
+  plugin?(): void;
+  errorHandler?(err: E, instance: ComponentPublicInstance | null, info: string): void;
+  routerErrorHandler?(error: R, to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded): void;
+}
+
+export class App<E = Error, R = Error> {
+  static #instance: App;
+  readonly #app: VueApp<Element>;
+  readonly #options: AppOptions<E, R>;
+  readonly #router: Router;
+  readonly #pinia: Pinia;
+
+  static init<E = Error, R = Error>(app: VueApp<Element>, options: AppOptions<E, R>): App {
+    if (!App.#instance) App.#instance = new App<E, R>(app, options) as App;
+    return App.#instance;
+  }
+
+  constructor(app: VueApp<Element>, options: AppOptions<E, R>) {
+    this.#app = app;
+    this.#options = options;
+
+    this.#addOptions();
+    this.#router = router;
+    this.#pinia = pinia;
+
+    this.#mount().finally(() => console.log('🚀 app mounted'));
+
+    this.#addErrorHandler();
+  }
+
+  #addOptions() {
+    this.#options.mixins?.forEach(this.#app.mixin);
+    this.#options.plugin?.();
+    this.#options.directive?.();
+  }
+
+  async #mount() {
+    await this.#options.beforeCreate?.(this.#router, this.#pinia);
+    this.#app.mount('#app');
+    this.#options.mounted?.(this.#router, this.#pinia);
+  }
+
+  #addErrorHandler() {
+    if (this.#options.routerErrorHandler) this.#router.onError(this.#options.routerErrorHandler);
+    if (this.#options.errorHandler) this.#app.config.errorHandler = this.#options.errorHandler as AppConfig['errorHandler'];
+  }
+}
