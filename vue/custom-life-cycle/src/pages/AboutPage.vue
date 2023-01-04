@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 <template>
   <div v-focus class="about">
-    <h1>This is an ab out page</h1>
+    <h1>This is an about page</h1>
   </div>
 </template>
 
