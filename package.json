@@ -1,0 +1,36 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "author": "ukyi",
+  "private": true,
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "npx simple-git-hooks",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --cache --fix --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "eslint": "^8.31.0",
+    "eslint-define-config": "^1.13.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nano-staged": "^0.8.0",
+    "npm-run-all": "^4.1.5",
+    "simple-git-hooks": "^2.8.1",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4"
+  },
+  "volta": {
+    "node": "18.12.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "./node_modules/.bin/nano-staged"
+  },
+  "nano-staged": {
+    "packages/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}": [
+      "eslint --cache --fix"
+    ]
+  }
+}
