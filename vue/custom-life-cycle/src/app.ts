@@ -8,8 +8,8 @@ type AppOptions<E, R> = {
   beforeCreate?(router: Router, pinia: Pinia): void | Promise<void>;
   mounted?(router: Router, pinia: Pinia): void | Promise<void>;
   mixins?: ComponentOptions[]
-  directive?(): void;
-  plugin?(): void;
+  directive?(router: Router, pinia: Pinia): void;
+  plugin?(router: Router, pinia: Pinia): void;
   errorHandler?(err: E, instance: ComponentPublicInstance | null, info: string): void;
   routerErrorHandler?(error: R, to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded): void;
 }
@@ -18,8 +18,8 @@ export class App<E = Error, R = Error> {
   static #instance: App;
   readonly #app: VueApp<Element>;
   readonly #options: AppOptions<E, R>;
-  readonly #router: Router;
-  readonly #pinia: Pinia;
+  readonly #router: Router = router;
+  readonly #pinia: Pinia = pinia;
 
   static init<E = Error, R = Error>(app: VueApp<Element>, options: AppOptions<E, R>): App {
     if (!App.#instance) App.#instance = new App<E, R>(app, options) as App;
@@ -31,18 +31,14 @@ export class App<E = Error, R = Error> {
     this.#options = options;
 
     this.#addOptions();
-    this.#router = router;
-    this.#pinia = pinia;
-
     this.#mount().finally(() => console.log('🚀 app mounted'));
-
     this.#addErrorHandler();
   }
 
   #addOptions() {
+    this.#options.plugin?.(this.#router, this.#pinia);
     this.#options.mixins?.forEach(this.#app.mixin);
-    this.#options.plugin?.();
-    this.#options.directive?.();
+    this.#options.directive?.(this.#router, this.#pinia);
   }
 
   async #mount() {

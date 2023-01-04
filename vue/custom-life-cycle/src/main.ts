@@ -2,8 +2,6 @@ import { createApp } from 'vue';
 import { App } from '@/app';
 import AppComponent from '@/App.vue';
 import { focus } from '@/directives';
-import { router } from '@/router';
-import { pinia } from '@/stores';
 import './assets/main.css';
 
 const app = createApp(AppComponent);
@@ -15,11 +13,13 @@ App.init(app, {
   mounted(router, pinia) {
     console.log('### mounted');
   },
-  plugin() {
+  plugin(router, pinia) {
+    console.log('### plugin');
     app.use(router);
     app.use(pinia);
   },
-  directive() {
+  directive(router, pinia) {
+    console.log('### directive');
     app.directive('focus', focus);
   },
   errorHandler(error, instance, info) {
