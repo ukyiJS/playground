@@ -4,28 +4,24 @@ import AppComponent from '@/App.vue';
 import { focus } from '@/directives';
 import './assets/main.css';
 
-const app = createApp(AppComponent);
-
-App.init(app, {
+App.init(createApp(AppComponent), {
   beforeCreate(router, pinia) {
     console.log('### beforeCreate');
   },
   mounted(router, pinia) {
     console.log('### mounted');
   },
-  plugin(router, pinia) {
+  plugin(app, router, pinia) {
     console.log('### plugin');
-    app.use(router);
-    app.use(pinia);
   },
-  directive(router, pinia) {
+  directive(app, router, pinia) {
     console.log('### directive');
     app.directive('focus', focus);
   },
-  errorHandler(error, instance, info) {
+  onError(error, instance, info) {
     console.log(error);
   },
-  routerErrorHandler(error, to, from) {
+  onRouterError(error, to, from) {
     console.log(error);
   },
 });

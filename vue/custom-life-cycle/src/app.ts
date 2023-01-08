@@ -8,10 +8,10 @@ type AppOptions<E, R> = {
   beforeCreate?(router: Router, pinia: Pinia): void | Promise<void>;
   mounted?(router: Router, pinia: Pinia): void | Promise<void>;
   mixins?: ComponentOptions[]
-  directive?(router: Router, pinia: Pinia): void;
-  plugin?(router: Router, pinia: Pinia): void;
-  errorHandler?(err: E, instance: ComponentPublicInstance | null, info: string): void;
-  routerErrorHandler?(error: R, to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded): void;
+  directive?(app:VueApp<Element>, router: Router, pinia: Pinia): void;
+  plugin?(app:VueApp<Element>, router: Router, pinia: Pinia): void;
+  onError?(err: E, instance: ComponentPublicInstance | null, info: string): void;
+  onRouterError?(error: R, to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded): void;
 }
 
 export class App<E = Error, R = Error> {
@@ -36,9 +36,11 @@ export class App<E = Error, R = Error> {
   }
 
   #addOptions() {
-    this.#options.plugin?.(this.#router, this.#pinia);
+    this.#app.use(router);
+    this.#app.use(pinia);
+    this.#options.plugin?.(this.#app, this.#router, this.#pinia);
     this.#options.mixins?.forEach(this.#app.mixin);
-    this.#options.directive?.(this.#router, this.#pinia);
+    this.#options.directive?.(this.#app, this.#router, this.#pinia);
   }
 
   async #mount() {
@@ -48,7 +50,7 @@ export class App<E = Error, R = Error> {
   }
 
   #addErrorHandler() {
-    if (this.#options.routerErrorHandler) this.#router.onError(this.#options.routerErrorHandler);
-    if (this.#options.errorHandler) this.#app.config.errorHandler = this.#options.errorHandler as AppConfig['errorHandler'];
+    if (this.#options.onRouterError) this.#router.onError(this.#options.onRouterError);
+    if (this.#options.onError) this.#app.config.errorHandler = this.#options.onError as AppConfig['errorHandler'];
   }
 }
