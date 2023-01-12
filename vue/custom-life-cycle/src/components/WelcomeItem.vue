@@ -12,6 +12,14 @@
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'WelcomeItem',
+});
+</script>
+
 <style scoped>
 .item {
   margin-top: 2rem;

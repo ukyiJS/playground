@@ -1,29 +1,40 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+<template>
+  <div id="app">
+    <header>
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+
+      <div class="wrapper">
+        <HelloWorld v-focus msg="You did it!" />
+
+        <nav>
+          <RouterLink :to="{ name: homeRoute.home }">
+            Home
+          </RouterLink>
+          <RouterLink :to="{ name: homeRoute.about }">
+            About
+          </RouterLink>
+        </nav>
+      </div>
+    </header>
+    <RouterView />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { homeRoute } from '@/router/routes/home';
 import HelloWorld from './components/HelloWorld.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    HelloWorld,
+  },
+  data: () => ({
+    homeRoute,
+  }),
+});
 </script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld v-focus msg="You did it!" />
-
-      <nav>
-        <RouterLink :to="{ name: homeRoute.home }">
-          Home
-        </RouterLink>
-        <RouterLink :to="{ name: homeRoute.about }">
-          About
-        </RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
-</template>
 
 <style scoped>
 header {
