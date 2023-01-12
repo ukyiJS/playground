@@ -12,13 +12,13 @@
   },
   "dependencies": {
     "pinia": "^2.0.28",
-    "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue": "^2.7.14",
+    "vue-router": "^3.6.5"
   },
   "devDependencies": {
     "@types/jsdom": "^20.0.1",
-    "@vitejs/plugin-vue": "^4.0.0",
-    "@vitejs/plugin-vue-jsx": "^3.0.0",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitejs/plugin-vue2-jsx": "^1.1.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/test-utils": "^2.2.6",
     "@vue/tsconfig": "^0.1.3",

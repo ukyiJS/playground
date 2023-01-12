@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url';
-import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
+import vue from '@vitejs/plugin-vue2';
+import vueJsx from '@vitejs/plugin-vue2-jsx';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
