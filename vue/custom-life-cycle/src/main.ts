@@ -1,27 +1,29 @@
-import { createApp } from 'vue';
+import Vue from 'vue';
 import { App } from '@/app';
-import AppComponent from '@/App.vue';
 import { focus } from '@/directives';
+import { preload } from '@/plugins/preload';
 import './assets/main.css';
 
-App.init(createApp(AppComponent), {
+App.init({
   beforeCreate(router, pinia) {
+    preload(router);
+
     console.log('### beforeCreate');
   },
-  mounted(router, pinia) {
+  mounted(app, router, pinia) {
     console.log('### mounted');
   },
-  plugin(app, router, pinia) {
+  plugin(router, pinia) {
     console.log('### plugin');
   },
-  directive(app, router, pinia) {
+  directive(router, pinia) {
     console.log('### directive');
-    app.directive('focus', focus);
+    Vue.directive('focus', focus);
   },
   onError(error, instance, info) {
     console.log(error);
   },
-  onRouterError(error, to, from) {
+  onRouterError(error) {
     console.log(error);
   },
 });
