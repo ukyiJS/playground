@@ -8,3 +8,5 @@ type Values<T extends ObjectLiteral> = (T[keyof T])[];
 type Entries<T extends ObjectLiteral> = {
   [P in keyof T]-?: [P, T[P]]
 }[keyof T][];
+
+type Lazy<T> = () => Promise<T>;
