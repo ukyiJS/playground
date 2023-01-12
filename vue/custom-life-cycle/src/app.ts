@@ -1,33 +1,35 @@
 import type { Pinia } from 'pinia';
-import type { AppConfig, ComponentOptions, ComponentPublicInstance, App as VueApp } from 'vue';
-import type { RouteLocationNormalized, RouteLocationNormalizedLoaded, Router } from 'vue-router';
+import Vue from 'vue';
+import type { ComponentOptions, CreateElement } from 'vue';
+import type { default as VueRouter } from 'vue-router';
+import type { ErrorHandler } from 'vue-router/types/router';
+import type { VueConfiguration } from 'vue/types/vue';
+import AppComponent from '@/App.vue';
 import { router } from '@/router';
 import { pinia } from '@/stores';
 
-type AppOptions<E, R> = {
-  beforeCreate?(router: Router, pinia: Pinia): void | Promise<void>;
-  mounted?(router: Router, pinia: Pinia): void | Promise<void>;
-  mixins?: ComponentOptions[]
-  directive?(app:VueApp<Element>, router: Router, pinia: Pinia): void;
-  plugin?(app:VueApp<Element>, router: Router, pinia: Pinia): void;
-  onError?(err: E, instance: ComponentPublicInstance | null, info: string): void;
-  onRouterError?(error: R, to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded): void;
+type AppOptions<E extends Error, R extends Error> = {
+  beforeCreate?(router: VueRouter, pinia: Pinia): void | Promise<void>;
+  mounted?(app: Vue, router: VueRouter, pinia: Pinia): void | Promise<void>;
+  mixins?: ComponentOptions<Vue>[]
+  directive?(router: VueRouter, pinia: Pinia): void;
+  plugin?(router: VueRouter, pinia: Pinia): void;
+  onError?(err: Error, vm: Vue, info: string): void;
+  onRouterError?(error: R): void;
 }
 
-export class App<E = Error, R = Error> {
-  static #instance: App;
-  readonly #app: VueApp<Element>;
+export class App<E extends Error = Error, R extends Error = Error> {
+  static #instance: unknown;
   readonly #options: AppOptions<E, R>;
-  readonly #router: Router = router;
+  readonly #router: VueRouter = router;
   readonly #pinia: Pinia = pinia;
 
-  static init<E = Error, R = Error>(app: VueApp<Element>, options: AppOptions<E, R>): App {
-    if (!App.#instance) App.#instance = new App<E, R>(app, options) as App;
-    return App.#instance;
+  static init<E extends Error = Error, R extends Error = Error>(options: AppOptions<E, R>): App<E, R> {
+    if (!App.#instance) App.#instance = new App<E, R>(options);
+    return App.#instance as App<E, R>;
   }
 
-  constructor(app: VueApp<Element>, options: AppOptions<E, R>) {
-    this.#app = app;
+  constructor(options: AppOptions<E, R>) {
     this.#options = options;
 
     this.#addOptions();
@@ -36,21 +38,19 @@ export class App<E = Error, R = Error> {
   }
 
   #addOptions() {
-    this.#app.use(router);
-    this.#app.use(pinia);
-    this.#options.plugin?.(this.#app, this.#router, this.#pinia);
-    this.#options.mixins?.forEach(this.#app.mixin);
-    this.#options.directive?.(this.#app, this.#router, this.#pinia);
+    this.#options.plugin?.(this.#router, this.#pinia);
+    this.#options.mixins?.forEach(Vue.mixin);
+    this.#options.directive?.(this.#router, this.#pinia);
   }
 
   async #mount() {
     await this.#options.beforeCreate?.(this.#router, this.#pinia);
-    this.#app.mount('#app');
-    this.#options.mounted?.(this.#router, this.#pinia);
+    const app = new Vue({ router, pinia, render: (h: CreateElement) => h(AppComponent) }).$mount('#app');
+    this.#options.mounted?.(app, this.#router, this.#pinia);
   }
 
   #addErrorHandler() {
-    if (this.#options.onRouterError) this.#router.onError(this.#options.onRouterError);
-    if (this.#options.onError) this.#app.config.errorHandler = this.#options.onError as AppConfig['errorHandler'];
+    if (this.#options.onRouterError) this.#router.onError(this.#options.onRouterError as ErrorHandler);
+    if (this.#options.onError) Vue.config.errorHandler = this.#options.onError as VueConfiguration['errorHandler'];
   }
 }

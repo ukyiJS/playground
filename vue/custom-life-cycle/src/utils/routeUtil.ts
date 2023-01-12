@@ -1,9 +1,9 @@
 import type { Component } from 'vue';
-import type { RouteRecordRaw } from 'vue-router';
+import type { RawLocation } from 'vue-router';
 
 export const routeView = (name: `${string}Page`) => (): Promise<Component> => import(`@/pages/${name}.vue`);
 
-type RouteConfig = Omit<RouteRecordRaw, 'path' | 'name'> & {
+type RouteConfig = Omit<RawLocation, 'path' | 'name'> & {
   readonly path: string;
   readonly name: string;
 }

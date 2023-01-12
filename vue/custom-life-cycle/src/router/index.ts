@@ -1,10 +1,11 @@
-import type { RouteRecordRaw } from 'vue-router';
-import { createRouter, createWebHistory } from 'vue-router';
+import Vue from 'vue';
+import type { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 
-const getRoutes = (): RouteRecordRaw[] => {
+const getRoutes = (): RouteConfig[] => {
   const symbol = Symbol.for('routes');
-  const modules = import.meta.glob<ObjectLiteral<{ [p: symbol]: RouteRecordRaw[] }>>('/src/router/routes/!(index).[j,t]s', { eager: true });
-  return Object.values(modules).reduce<RouteRecordRaw[]>((acc, module) => {
+  const modules = import.meta.glob<ObjectLiteral<{ [p: symbol]: RouteConfig[] }>>('/src/router/routes/!(index).[j,t]s', { eager: true });
+  return Object.values(modules).reduce<RouteConfig[]>((acc, module) => {
     const routes = Object.values(module).map(routeSymbols => {
       const routes = routeSymbols[symbol];
       delete routeSymbols[symbol];
@@ -14,7 +15,10 @@ const getRoutes = (): RouteRecordRaw[] => {
   }, []);
 };
 
-export const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+Vue.use(VueRouter);
+
+export const router = new VueRouter({
+  mode: 'history',
+  base: import.meta.env.BASE_URL,
   routes: getRoutes(),
 });
