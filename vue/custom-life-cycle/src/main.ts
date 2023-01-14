@@ -6,9 +6,8 @@ import './assets/main.css';
 
 App.init({
   beforeCreate(router, pinia) {
-    preload(router);
-
     console.log('### beforeCreate');
+    preload(router);
   },
   mounted(app, router, pinia) {
     console.log('### mounted');

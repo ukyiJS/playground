@@ -122,5 +122,13 @@ export default defineComponent({
       type: String,
     },
   },
+  data: () => ({
+    data: null,
+  }),
+  preload() {
+    return {
+      data: 'preload Data',
+    };
+  },
 });
 </script>
