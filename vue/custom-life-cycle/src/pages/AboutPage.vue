@@ -10,10 +10,13 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'AboutPage',
   data: () => ({
-    test: '',
+    data: null,
   }),
-  preload() {
-    return { test: 'preload Test' };
+  async preload() {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return {
+      data: 'AboutPage preload data',
+    };
   },
 });
 </script>

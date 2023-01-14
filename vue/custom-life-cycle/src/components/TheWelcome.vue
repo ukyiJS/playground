@@ -125,10 +125,14 @@ export default defineComponent({
   data: () => ({
     data: null,
   }),
-  preload() {
+  async preload() {
+    await new Promise(resolve => setTimeout(resolve, 1000));
     return {
-      data: 'preload Data',
+      data: 'TheWelcome preload Data',
     };
+  },
+  created() {
+    console.log(this.data);
   },
 });
 </script>
