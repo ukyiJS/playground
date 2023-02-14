@@ -1,23 +1,22 @@
 import type { Component } from 'vue';
-import type { RawLocation } from 'vue-router';
+import type { RouteConfig as _RouteConfig } from 'vue-router';
 
 export const routeView = (name: `${string}Page`) => (): Promise<Component> => import(`@/pages/${name}.vue`);
 
-type RouteConfig = Omit<RawLocation, 'path' | 'name'> & {
+interface RouteConfig extends Omit<_RouteConfig, 'path' | 'name' | 'children'> {
   readonly path: string;
-  readonly name: string;
+  readonly name?: string;
+  readonly children?: readonly RouteConfig[];
 }
-type RouteIterator<Name> = {
-  [Symbol.iterator](): IterableIterator<Name>;
-}
-export const routeConfig = <C extends RouteConfig, Name extends { [P in C['name']]: P }, Iterator extends RouteIterator<C['name']>>(routes: readonly C[]): Name & Iterator => routes.reduce((acc, { name }, index) => ({
-  ...acc,
-  [name]: name,
-  * [Symbol.iterator]() {
-    if (index < routes.length - 1) return;
-    for (const key of Object.keys(acc)) {
-      yield key;
-      yield name;
-    }
-  },
-}), { [Symbol.for('routes')]: routes } as ObjectLiteral) as Name & Iterator;
+
+type RouteChildren<Config extends RouteConfig['children']> = Config extends readonly RouteConfig[] ? Config[number] : never;
+type RouteNames<Config extends RouteConfig> = Config['name'] | RouteChildren<Config['children']>['name'];
+type RouteNameObject<Name> = { [P in Name extends string ? Name : never]: P };
+
+export const routeConfig = <C extends RouteConfig, Name extends RouteNameObject<RouteNames<C>>>(routes: readonly C[]): Name => {
+  const route = routes.reduce<ObjectLiteral>((acc, { name, children }) => {
+    const childrenNames = children?.reduce<ObjectLiteral<string>>((_acc, c) => (c.name ? { ..._acc, [c.name]: c.name } : _acc), {}) ?? {};
+    return (name ? { ...acc, ...childrenNames, [name]: name } : acc);
+  }, { [Symbol.for('routes')]: routes }) as Name;
+  return route as Name;
+};
