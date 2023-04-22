@@ -1,3 +1,5 @@
+import camelCase from 'lodash-es/camelCase';
+import type { CamelCase } from 'shared/utility-types/camelCase';
 import type { Component } from 'vue';
 import type { RouteConfig as _RouteConfig } from 'vue-router';
 
@@ -9,14 +11,23 @@ interface RouteConfig extends Omit<_RouteConfig, 'path' | 'name' | 'children'> {
   readonly children?: readonly RouteConfig[];
 }
 
-type RouteChildren<Config extends RouteConfig['children']> = Config extends readonly RouteConfig[] ? Config[number] : never;
-type RouteNames<Config extends RouteConfig> = Config['name'] | RouteChildren<Config['children']>['name'];
-type RouteNameObject<Name> = { [P in Name extends string ? Name : never]: P };
+type ObjectLiteral = Record<string, string>;
+type RouteNameObject<Name extends string> = { [P in Name as CamelCase<P>]: P };
 
-export const routeConfig = <C extends RouteConfig, Name extends RouteNameObject<RouteNames<C>>>(routes: readonly C[]): Name => {
+type RouteName<Name> = Name extends string ? Name : never;
+type RouteChildren<C extends RouteConfig['children']> = C extends Required<C> ? C[number] : never;
+
+type RouteNames<Config extends RouteConfig> = Config extends RouteConfig
+  ? RouteName<Config['name']> | RouteNames<RouteChildren<Config['children']>>
+  : never;
+
+export const routeConfig = <const Config extends RouteConfig, Route extends RouteNameObject<RouteNames<Config>>>(routes: readonly Config[]): Route => {
+  const getChildrenNames = (children?: readonly RouteConfig[] | undefined): ObjectLiteral => children?.reduce((acc, c) => c.name ? { ...acc, [camelCase(c.name)]: c.name, ...getChildrenNames(c.children) } : acc, {}) ?? {};
+
   const route = routes.reduce<ObjectLiteral>((acc, { name, children }) => {
-    const childrenNames = children?.reduce<ObjectLiteral<string>>((_acc, c) => (c.name ? { ..._acc, [c.name]: c.name } : _acc), {}) ?? {};
-    return (name ? { ...acc, ...childrenNames, [name]: name } : acc);
-  }, { [Symbol.for('routes')]: routes }) as Name;
-  return route as Name;
+    const childrenNames = getChildrenNames(children);
+    const result = { ...acc, ...childrenNames };
+    return name ? { ...result, [camelCase(name)]: name } : result;
+  }, { [Symbol.for('routes')]: routes });
+  return route as Route;
 };

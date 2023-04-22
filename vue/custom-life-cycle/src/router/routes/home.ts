@@ -8,7 +8,7 @@ export const homeRoute = routeConfig([
   },
   {
     path: '/about',
-    name: 'about',
+    name: 'About',
     component: routeView('AboutPage'),
   },
-] as const);
+]);
