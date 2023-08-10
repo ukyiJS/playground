@@ -4,13 +4,16 @@ import VueRouter from 'vue-router';
 
 const getRoutes = (): RouteConfig[] => {
   const symbol = Symbol.for('routes');
-  const modules = import.meta.glob<ObjectLiteral<{ [p: symbol]: RouteConfig[] }>>('/src/router/routes/!(index).[j,t]s', { eager: true });
+  const modules = import.meta.glob<ObjectLiteral<Record<symbol, RouteConfig[]>>>('/src/router/routes/!(index).[j,t]s', { eager: true });
+
   return Object.values(modules).reduce<RouteConfig[]>((acc, module) => {
     const routes = Object.values(module).map(routeSymbols => {
       const routes = routeSymbols[symbol];
       delete routeSymbols[symbol];
+
       return routes;
     });
+
     return acc.concat(...routes);
   }, []);
 };

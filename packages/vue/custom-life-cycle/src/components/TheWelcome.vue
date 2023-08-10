@@ -127,6 +127,7 @@ export default defineComponent({
   }),
   async preload() {
     await new Promise(resolve => setTimeout(resolve, 1000));
+
     return {
       data: 'TheWelcome preload Data',
     };
