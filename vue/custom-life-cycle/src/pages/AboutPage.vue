@@ -14,6 +14,7 @@ export default defineComponent({
   }),
   async preload() {
     await new Promise(resolve => setTimeout(resolve, 500));
+
     return {
       data: 'AboutPage preload data',
     };

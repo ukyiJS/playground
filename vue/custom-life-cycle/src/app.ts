@@ -14,14 +14,14 @@ type RouterErrorHandler = {
 };
 
 type AppOptions<E extends Error, R extends Error> = {
-  beforeCreate?(router: VueRouter, pinia: Pinia): void | Promise<void>;
-  mounted?(app: Vue, router: VueRouter, pinia: Pinia): void | Promise<void>;
-  mixins?: ComponentOptions<Vue>[]
+  mixins?: ComponentOptions<Vue>[];
+  beforeCreate?(router: VueRouter, pinia: Pinia): Promise<void> | void;
+  mounted?(app: Vue, router: VueRouter, pinia: Pinia): Promise<void> | void;
   directive?(router: VueRouter, pinia: Pinia): void;
   plugin?(router: VueRouter, pinia: Pinia): void;
   onError?(err: E, vm: Vue, info: string): void;
   onRouterError?(error: R): void;
-}
+};
 
 export class App<E extends Error = Error, R extends Error = Error> {
   static #instance: unknown;
@@ -29,17 +29,18 @@ export class App<E extends Error = Error, R extends Error = Error> {
   readonly #router: VueRouter = router;
   readonly #pinia: Pinia = pinia;
 
-  static init<E extends Error = Error, R extends Error = Error>(options: AppOptions<E, R>): App<E, R> {
-    if (!App.#instance) App.#instance = new App<E, R>(options);
-    return App.#instance as App<E, R>;
-  }
-
   constructor(options: AppOptions<E, R>) {
     this.#options = options;
 
     this.#addOptions();
     this.#mount().finally(() => console.log('🚀 app mounted'));
     this.#addErrorHandler();
+  }
+
+  static init<E extends Error = Error, R extends Error = Error>(options: AppOptions<E, R>): App<E, R> {
+    if (!App.#instance) App.#instance = new App<E, R>(options);
+
+    return App.#instance as App<E, R>;
   }
 
   #addOptions() {

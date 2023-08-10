@@ -1,1 +1,1 @@
-type Lazy<T> = () => Promise<T>
+type Lazy<T> = () => Promise<T>;

@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { homeRoute } from '@/router/routes/home';
 import HelloWorld from './components/HelloWorld.vue';
+import { homeRoute } from '@/router/routes/home';
 
 export default defineComponent({
   name: 'App',

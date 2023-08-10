@@ -5,11 +5,11 @@ import type { RouteConfig as _RouteConfig } from 'vue-router';
 
 export const routeView = (name: `${string}Page`) => (): Promise<Component> => import(`@/pages/${name}.vue`);
 
-interface RouteConfig extends Omit<_RouteConfig, 'path' | 'name' | 'children'> {
+type RouteConfig = Omit<_RouteConfig, 'children' | 'name' | 'path'> & {
   readonly path: string;
   readonly name?: string;
   readonly children?: readonly RouteConfig[];
-}
+};
 
 type ObjectLiteral = Record<string, string>;
 type RouteNameObject<Name extends string> = { [P in Name as CamelCase<P>]: P };
@@ -27,7 +27,9 @@ export const routeConfig = <const Config extends RouteConfig, Route extends Rout
   const route = routes.reduce<ObjectLiteral>((acc, { name, children }) => {
     const childrenNames = getChildrenNames(children);
     const result = { ...acc, ...childrenNames };
+
     return name ? { ...result, [camelCase(name)]: name } : result;
   }, { [Symbol.for('routes')]: routes });
+
   return route as Route;
 };
