@@ -1,6 +1,4 @@
 packages:
-  - vue/*
-  - react/*
-  - nest/*
+  - packages/**/*
   - lib
   - shared

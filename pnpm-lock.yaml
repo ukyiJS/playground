@@ -78,7 +78,7 @@ importers:
 
   lib: {}
 
-  react/template:
+  packages/react/template:
     dependencies:
       react:
         specifier: ^18.2.0
@@ -103,9 +103,7 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2(vite@4.4.9)
 
-  shared: {}
-
-  vue/custom-life-cycle:
+  packages/vue/custom-life-cycle:
     dependencies:
       pinia:
         specifier: ^2.0.28
@@ -150,6 +148,8 @@ importers:
       vue-tsc:
         specifier: ^1.0.12
         version: 1.0.12(typescript@4.7.4)
+
+  shared: {}
 
 packages:
 
@@ -2622,7 +2622,7 @@ packages:
       nth-check: 2.1.1
       postcss-selector-parser: 6.0.13
       semver: 7.5.4
-      vue-eslint-parser: 9.1.0(eslint@8.46.0)
+      vue-eslint-parser: 9.3.1(eslint@8.46.0)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - supports-color
