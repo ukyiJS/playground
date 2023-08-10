@@ -1,5 +1,5 @@
 {
-  "extends": "config/node/tsconfig.base.json",
+  "extends": "lib/tsconfig/tsconfig.node.json",
   "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*"],
   "compilerOptions": {
     "composite": true,
