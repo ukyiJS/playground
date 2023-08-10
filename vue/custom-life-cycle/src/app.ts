@@ -2,11 +2,16 @@ import type { Pinia } from 'pinia';
 import Vue from 'vue';
 import type { ComponentOptions, CreateElement } from 'vue';
 import type { default as VueRouter } from 'vue-router';
-import type { ErrorHandler } from 'vue-router/types/router';
-import type { VueConfiguration } from 'vue/types/vue';
 import AppComponent from '@/App.vue';
 import { router } from '@/router';
 import { pinia } from '@/stores';
+
+type VueErrorHandler = {
+  (err: Error, vm: Vue, info: string): void;
+};
+type RouterErrorHandler = {
+  (err: Error): void;
+};
 
 type AppOptions<E extends Error, R extends Error> = {
   beforeCreate?(router: VueRouter, pinia: Pinia): void | Promise<void>;
@@ -14,7 +19,7 @@ type AppOptions<E extends Error, R extends Error> = {
   mixins?: ComponentOptions<Vue>[]
   directive?(router: VueRouter, pinia: Pinia): void;
   plugin?(router: VueRouter, pinia: Pinia): void;
-  onError?(err: Error, vm: Vue, info: string): void;
+  onError?(err: E, vm: Vue, info: string): void;
   onRouterError?(error: R): void;
 }
 
@@ -50,7 +55,7 @@ export class App<E extends Error = Error, R extends Error = Error> {
   }
 
   #addErrorHandler() {
-    if (this.#options.onRouterError) this.#router.onError(this.#options.onRouterError as ErrorHandler);
-    if (this.#options.onError) Vue.config.errorHandler = this.#options.onError as VueConfiguration['errorHandler'];
+    if (this.#options.onRouterError) this.#router.onError(this.#options.onRouterError as RouterErrorHandler);
+    if (this.#options.onError) Vue.config.errorHandler = this.#options.onError as VueErrorHandler;
   }
 }
