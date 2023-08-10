@@ -2,5 +2,5 @@ packages:
   - vue/*
   - react/*
   - nest/*
-  - config
+  - lib
   - shared
