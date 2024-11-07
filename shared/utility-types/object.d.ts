@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type ObjectLiteral<T = any> = {
-  [p: string]: T;
-}
+type ObjectLiteral<T = any> = Record<string, T>;
 
 type Keys<T extends ObjectLiteral> = (keyof T)[];
 type Values<T extends ObjectLiteral> = (T[keyof T])[];

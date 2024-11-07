@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 
-const toString = Object.prototype.toString;
+const { toString } = Object.prototype;
 
 export const is = (val: unknown, type: string): boolean => toString.call(val) === `[object ${type}]`;
 
@@ -15,6 +15,7 @@ export const isEmpty = <T = unknown>(val: T): val is T => {
   if (isArray(val) || isString(val)) return val.length === 0;
   if (val instanceof Map || val instanceof Set) return val.size === 0;
   if (isObject(val)) return Object.keys(val).length === 0;
+
   return false;
 };
 
@@ -52,5 +53,6 @@ export const isClient = (): boolean => !isServer();
 
 export const isUrl = (path: string): boolean => {
   const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+
   return reg.test(path);
 };
