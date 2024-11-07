@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type ObjectLiteral<T = any> = Record<string, T>;
+type ObjectLiteral<T = unknown> = Record<string, T>;
 
-type Keys<T extends ObjectLiteral> = (keyof T)[];
-type Values<T extends ObjectLiteral> = (T[keyof T])[];
+type Keyof<T extends ObjectLiteral> = Exclude<keyof T, symbol>;
+
+type Keys<T extends ObjectLiteral> = (Keyof<T>)[];
+type Values<T extends ObjectLiteral> = (T[Keyof<T>])[];
 type Entries<T extends ObjectLiteral> = {
-  [P in keyof T]-?: [P, T[P]]
-}[keyof T][];
+  [P in Keyof<T>]-?: [P, T[P]]
+}[Keyof<T>][];
 
 interface ObjectConstructor {
   keys<T extends ObjectLiteral>(o: T): Keys<T>;
