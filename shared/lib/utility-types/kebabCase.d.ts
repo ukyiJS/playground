@@ -1,4 +1,4 @@
-import type { CamelCase } from './camelCase';
+import type { CamelCase } from 'lib/utility-types/camelCase';
 
 type CamelCaseToKebabCase<S> = S extends `${infer T}${infer U}`
   ? `${T extends Capitalize<T> ? '-' : ''}${Lowercase<T>}${CamelCaseToKebabCase<U>}`
