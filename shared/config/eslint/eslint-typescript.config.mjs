@@ -18,7 +18,7 @@ export const eslintTypescriptConfig = [
       }],
       '@typescript-eslint/array-type': 'error',
       '@typescript-eslint/consistent-indexed-object-style': 'error',
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       '@typescript-eslint/member-ordering': [
         'error',
         {
@@ -58,12 +58,6 @@ export const eslintTypescriptConfig = [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-    },
-  },
-  {
-    files: ['**/*.d.ts'],
-    rules: {
-      '@typescript-eslint/consistent-type-definitions': 'off',
     },
   },
 ];
