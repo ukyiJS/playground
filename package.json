@@ -7,7 +7,8 @@
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo dev",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "type-check": "turbo type-check"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
