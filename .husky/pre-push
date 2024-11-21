@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "\033[0;34m🔍타입 체크 중...\033[0m"
+pnpm type-check
+if [ $? -ne 0 ]; then
+  echo "\n\033[0;31m❌타입 에러가 발생했습니다. 타입 에러를 해결해주세요.\033[0m\n"
+  exit 1
+fi
+echo "\n\033[0;32m✅타입 체크 완료\033[0m\n"
