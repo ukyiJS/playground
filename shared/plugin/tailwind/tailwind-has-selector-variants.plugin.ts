@@ -1,0 +1,45 @@
+import plugin from 'tailwindcss/plugin';
+
+export const hasSelectorVariantsPlugin = plugin(({ matchVariant, addVariant }) => {
+  matchVariant('has-aria', value => `:has([aria-${value}="true"]) + &`);
+  addVariant('has-aria-busy', ':has([aria-busy="true"]) + &');
+  addVariant('has-aria-checked', ':has([aria-checked="true"]) + &');
+  addVariant('has-aria-disabled', ':has([aria-disabled="true"]) + &');
+  addVariant('has-aria-expanded', ':has([aria-expanded="true"]) + &');
+  addVariant('has-aria-hidden', ':has([aria-hidden="true"]) + &');
+  addVariant('has-aria-pressed', ':has([aria-pressed="true"]) + &');
+  addVariant('has-aria-readonly', ':has([aria-readonly="true"]) + &');
+  addVariant('has-aria-required', ':has([aria-required="true"]) + &');
+  addVariant('has-aria-selected', ':has([aria-selected="true"]) + &');
+
+  matchVariant('has-data', value => `:has([data-${value}]) + &`);
+  addVariant('has-active', ':has(:active) + &');
+  addVariant('has-autofill', ':has(:autofill) + &');
+  addVariant('has-checked', ':has(:checked) + &');
+  addVariant('has-default', ':has(:default) + &');
+  addVariant('has-disabled', ':has(:disabled) + &');
+  addVariant('has-empty', ':has(:empty) + &');
+  addVariant('has-enabled', ':has(:enabled) + &');
+  addVariant('has-focus-visible', ':has(:focus-visible) + &');
+  addVariant('has-focus-within', ':has(:focus-within) + &');
+  addVariant('has-focus', ':has(:focus) + &');
+  addVariant('has-hover', ':has(:hover) + &');
+  addVariant('has-in-range', ':has(:in-range) + &');
+  addVariant('has-indeterminate', ':has(:indeterminate) + &');
+  addVariant('has-invalid', ':has(:invalid) + &');
+  addVariant('has-last-of-type', ':has(:last-of-type) + &');
+  addVariant('has-last', ':has(:last-child) + &');
+  addVariant('has-odd', ':has(:nth-child(odd)) + &');
+  addVariant('has-even', ':has(:nth-child(even)) + &');
+  addVariant('has-only-of-type', ':has(:only-of-type) + &');
+  addVariant('has-only', ':has(:only-child) + &');
+  addVariant('has-open', ':has([open]) + &');
+  addVariant('has-optional', ':has(:optional) + &');
+  addVariant('has-out-of-range', ':has(:out-of-range) + &');
+  addVariant('has-placeholder-shown', ':has(:placeholder-shown) + &');
+  addVariant('has-read-only', ':has(:read-only) + &');
+  addVariant('has-required', ':has(:required) + &');
+  addVariant('has-target', ':has(:target) + &');
+  addVariant('has-valid', ':has(:valid) + &');
+  addVariant('has-visited', ':has(:visited) + &');
+});

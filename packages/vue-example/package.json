@@ -1,0 +1,36 @@
+{
+  "name": "@vue/vue-example",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "playwright test",
+    "build-only": "vite build",
+    "type-check": "vue-tsc -b --force",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "pinia": "^2.2.4",
+    "shared": "workspace:^*",
+    "vue": "^3.5.12",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^20.16.11",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.9",
+    "vite-plugin-vue-devtools": "^7.5.2",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.4",
+    "vue-tsc": "^2.1.6"
+  }
+}

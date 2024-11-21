@@ -34,3 +34,7 @@ playwright-report/
 # env files
 .env
 .env.*
+!.env.example
+
+# turbo cache
+.turbo
