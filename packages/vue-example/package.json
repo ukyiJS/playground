@@ -1,5 +1,5 @@
 {
-  "name": "@vue/vue-example",
+  "name": "@vue/example",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -14,23 +14,23 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "pinia": "^2.2.4",
-    "shared": "workspace:^*",
-    "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "pinia": "^2.3.0",
+    "shared": "workspace:^",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.49.1",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.16.11",
-    "@vitejs/plugin-vue": "^5.1.4",
-    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "@types/node": "^20.17.10",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue-jsx": "^4.1.1",
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^25.0.1",
-    "vite": "^5.4.9",
-    "vite-plugin-vue-devtools": "^7.5.2",
-    "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.1.4",
-    "vue-tsc": "^2.1.6"
+    "vite": "^6.0.3",
+    "vite-plugin-vue-devtools": "^7.6.8",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8",
+    "vue-tsc": "^2.1.10"
   }
 }
